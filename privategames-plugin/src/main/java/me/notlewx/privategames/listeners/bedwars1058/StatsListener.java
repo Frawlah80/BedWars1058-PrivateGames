@@ -5,6 +5,7 @@ import com.andrei1058.bedwars.api.arena.GameState;
 import com.andrei1058.bedwars.api.arena.team.ITeam;
 import com.andrei1058.bedwars.api.events.player.PlayerKillEvent;
 import com.andrei1058.bedwars.api.events.player.PlayerLeaveArenaEvent;
+import com.andrei1058.bedwars.api.stats.IPlayerStats;
 import com.andrei1058.bedwars.stats.PlayerStats;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,7 +21,7 @@ public class StatsListener implements Listener {
     public static void onPlayerDeath(PlayerKillEvent e) {
         if (!api.getPrivateArenaUtil().isArenaPrivate(e.getArena().getWorldName())) return;
 
-        PlayerStats victimStats = BedWars.getStatsManager().get(e.getVictim().getUniqueId());
+        IPlayerStats victimStats = BedWars.getStatsManager().get(e.getVictim().getUniqueId());
 
         if (e.getCause().isFinalKill()) {
             if (victimStats.getFinalDeaths() == 0) victimStats.setFinalDeaths(victimStats.getFinalDeaths());
@@ -30,7 +31,7 @@ public class StatsListener implements Listener {
             if (victimStats.getGamesPlayed() == 0) victimStats.setGamesPlayed(victimStats.getGamesPlayed());
             else victimStats.setLosses(victimStats.getLosses()-1);
             if (e.getKiller() != null) {
-                PlayerStats killerStats = BedWars.getStatsManager().get(e.getKiller().getUniqueId());
+                IPlayerStats killerStats = BedWars.getStatsManager().get(e.getKiller().getUniqueId());
                 if (killerStats.getFinalKills() == 0) killerStats.setFinalKills(killerStats.getFinalKills());
                 else killerStats.setFinalKills(killerStats.getFinalKills() - 1);
             }
@@ -38,7 +39,7 @@ public class StatsListener implements Listener {
             if (victimStats.getDeaths() == 0) victimStats.setDeaths(victimStats.getDeaths());
             else victimStats.setDeaths(victimStats.getDeaths() - 1);
             if (e.getKiller() != null) {
-                PlayerStats killerStats = BedWars.getStatsManager().get(e.getKiller().getUniqueId());
+                IPlayerStats killerStats = BedWars.getStatsManager().get(e.getKiller().getUniqueId());
                 if (killerStats.getFinalKills() == 0) killerStats.setKills(killerStats.getKills());
                 else killerStats.setKills(killerStats.getKills() - 1);
             }
@@ -52,7 +53,7 @@ public class StatsListener implements Listener {
         if (!api.getPrivateArenaUtil().isArenaPrivate(e.getArena().getWorldName())) return;
         if (team != null) {
             if (e.getArena().getStatus() != GameState.starting && e.getArena().getStatus() != GameState.waiting) {
-                PlayerStats playerStats = BedWars.getStatsManager().get(player.getUniqueId());
+                IPlayerStats playerStats = BedWars.getStatsManager().get(player.getUniqueId());
                 Instant now = Instant.now();
                 playerStats.setLastPlay(now);
                 if (playerStats.getFirstPlay() == null) {
@@ -62,7 +63,7 @@ public class StatsListener implements Listener {
                 if (e.getArena().getStatus() == GameState.playing) {
                     Player damager;
                     ITeam killerTeam;
-                    PlayerStats damagerStats;
+                    IPlayerStats damagerStats;
                     if (team.isBedDestroyed()) {
                         if (e.getArena().isPlayer(player)) {
                             if (playerStats.getFinalDeaths() == 0) playerStats.setFinalDeaths(playerStats.getFinalDeaths());

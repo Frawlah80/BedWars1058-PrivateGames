@@ -75,7 +75,7 @@
             <artifactId>BedWars1058</artifactId>
             <version>23.12.2</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/libs/bedwars-plugin-23.12.2.jar</systemPath>
+            <systemPath>${project.basedir}/libs/bedwars-plugin-23.12.1-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.andrei1058.bedwars</groupId>
